@@ -1,0 +1,138 @@
+name: ft_putnbr
+tags: ["piscine", "ex0"]
+
+sources:
+  - ft_putnbr.c
+
+compile:
+  compiler: cc
+  flags:
+    - -Wall
+    - -Wextra
+    - -Werror
+
+tests:
+
+  - name: "nombre positif simple"
+    main: |
+      #include <unistd.h>
+      void ft_putnbr(int nb);
+      int main(void)
+      {
+          ft_putnbr(42);
+          return (0);
+      }
+    expected_stdout: "42"
+    expected_exit: 0
+
+  - name: "zero"
+    main: |
+      #include <unistd.h>
+      void ft_putnbr(int nb);
+      int main(void)
+      {
+          ft_putnbr(0);
+          return (0);
+      }
+    expected_stdout: "0"
+    expected_exit: 0
+
+  - name: "chiffre unique"
+    main: |
+      #include <unistd.h>
+      void ft_putnbr(int nb);
+      int main(void)
+      {
+          ft_putnbr(7);
+          return (0);
+      }
+    expected_stdout: "7"
+    expected_exit: 0
+
+  - name: "nombre negatif"
+    main: |
+      #include <unistd.h>
+      void ft_putnbr(int nb);
+      int main(void)
+      {
+          ft_putnbr(-42);
+          return (0);
+      }
+    expected_stdout: "-42"
+    expected_exit: 0
+
+  - name: "negatif chiffre unique"
+    main: |
+      #include <unistd.h>
+      void ft_putnbr(int nb);
+      int main(void)
+      {
+          ft_putnbr(-7);
+          return (0);
+      }
+    expected_stdout: "-7"
+    expected_exit: 0
+
+  - name: "INT_MAX (borne haute)"
+    main: |
+      #include <unistd.h>
+      #include <limits.h>
+      void ft_putnbr(int nb);
+      int main(void)
+      {
+          ft_putnbr(INT_MAX);
+          return (0);
+      }
+    expected_stdout: "2147483647"
+    expected_exit: 0
+
+  - name: "INT_MIN (piege classique : -nb overflow)"
+    main: |
+      #include <unistd.h>
+      #include <limits.h>
+      void ft_putnbr(int nb);
+      int main(void)
+      {
+          ft_putnbr(INT_MIN);
+          return (0);
+      }
+    expected_stdout: "-2147483648"
+    expected_exit: 0
+
+  - name: "puissance de 10 (dizaine)"
+    main: |
+      #include <unistd.h>
+      void ft_putnbr(int nb);
+      int main(void)
+      {
+          ft_putnbr(10);
+          return (0);
+      }
+    expected_stdout: "10"
+    expected_exit: 0
+
+  - name: "puissance de 10 negative"
+    main: |
+      #include <unistd.h>
+      void ft_putnbr(int nb);
+      int main(void)
+      {
+          ft_putnbr(-100);
+          return (0);
+      }
+    expected_stdout: "-100"
+    expected_exit: 0
+
+  - name: "appels multiples consecutifs"
+    main: |
+      #include <unistd.h>
+      void ft_putnbr(int nb);
+      int main(void)
+      {
+          ft_putnbr(123);
+          ft_putnbr(-456);
+          ft_putnbr(0);
+          return (0);
+      }
+    expected_stdout: "123-4560"
+    expected_exit: 0

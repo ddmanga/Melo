@@ -1,0 +1,309 @@
+name: ft_print_comb2
+tags: ["piscine", "ex2"]
+
+sources:
+  - ft_print_comb2.c
+
+compile:
+  compiler: cc
+  flags:
+    - -Wall
+    - -Wextra
+    - -Werror
+
+# Principe des tests : ft_print_comb2 écrit directement sur le fd 1 (write),
+# donc chaque test redirige STDOUT vers un pipe avant d'appeler la fonction,
+# capture ce qui a été écrit, puis vérifie le contenu. Ça évite d'avoir à
+# coller 34000 caractères de sortie attendue dans le YAML.
+
+tests:
+
+  - name: "premiere combinaison et son format (00 01, 00 02)"
+    main: |
+      #include <stdio.h>
+      #include <string.h>
+      #include <unistd.h>
+      void ft_print_comb2(void);
+
+      int main(void)
+      {
+          int pipefd[2];
+          pipe(pipefd);
+          int saved = dup(STDOUT_FILENO);
+          dup2(pipefd[1], STDOUT_FILENO);
+          close(pipefd[1]);
+
+          ft_print_comb2();
+
+          dup2(saved, STDOUT_FILENO);
+          close(saved);
+
+          char buffer[64000];
+          size_t total = 0;
+          ssize_t n;
+          while ((n = read(pipefd[0], buffer + total, sizeof(buffer) - total - 1)) > 0)
+              total += n;
+          buffer[total] = '\0';
+          close(pipefd[0]);
+
+          if (strncmp(buffer, "00 01, 00 02", 12) != 0)
+          {
+              printf("Debut incorrect, obtenu : \"%.20s\"\n", buffer);
+              return (1);
+          }
+          return (0);
+      }
+    expected_exit: 0
+
+  - name: "zero-padding du deuxieme nombre (00 09, 00 10)"
+    main: |
+      #include <stdio.h>
+      #include <string.h>
+      #include <unistd.h>
+      void ft_print_comb2(void);
+
+      int main(void)
+      {
+          int pipefd[2];
+          pipe(pipefd);
+          int saved = dup(STDOUT_FILENO);
+          dup2(pipefd[1], STDOUT_FILENO);
+          close(pipefd[1]);
+
+          ft_print_comb2();
+
+          dup2(saved, STDOUT_FILENO);
+          close(saved);
+
+          char buffer[64000];
+          size_t total = 0;
+          ssize_t n;
+          while ((n = read(pipefd[0], buffer + total, sizeof(buffer) - total - 1)) > 0)
+              total += n;
+          buffer[total] = '\0';
+          close(pipefd[0]);
+
+          if (strstr(buffer, "00 09, 00 10") == NULL)
+          {
+              printf("Zero-padding du 2eme nombre incorrect (attendu \"00 09, 00 10\" quelque part)\n");
+              return (1);
+          }
+          return (0);
+      }
+    expected_exit: 0
+
+  - name: "transition entre la serie 00 et la serie 01 (00 99, 01 02)"
+    main: |
+      #include <stdio.h>
+      #include <string.h>
+      #include <unistd.h>
+      void ft_print_comb2(void);
+
+      int main(void)
+      {
+          int pipefd[2];
+          pipe(pipefd);
+          int saved = dup(STDOUT_FILENO);
+          dup2(pipefd[1], STDOUT_FILENO);
+          close(pipefd[1]);
+
+          ft_print_comb2();
+
+          dup2(saved, STDOUT_FILENO);
+          close(saved);
+
+          char buffer[64000];
+          size_t total = 0;
+          ssize_t n;
+          while ((n = read(pipefd[0], buffer + total, sizeof(buffer) - total - 1)) > 0)
+              total += n;
+          buffer[total] = '\0';
+          close(pipefd[0]);
+
+          if (strstr(buffer, "00 99, 01 02") == NULL)
+          {
+              printf("Transition entre series incorrecte (attendu \"00 99, 01 02\" quelque part)\n");
+              return (1);
+          }
+          return (0);
+      }
+    expected_exit: 0
+
+  - name: "ordre croissant strict (pas de paire inversee ni de doublon)"
+    main: |
+      #include <stdio.h>
+      #include <string.h>
+      #include <unistd.h>
+      void ft_print_comb2(void);
+
+      int main(void)
+      {
+          int pipefd[2];
+          pipe(pipefd);
+          int saved = dup(STDOUT_FILENO);
+          dup2(pipefd[1], STDOUT_FILENO);
+          close(pipefd[1]);
+
+          ft_print_comb2();
+
+          dup2(saved, STDOUT_FILENO);
+          close(saved);
+
+          char buffer[64000];
+          size_t total = 0;
+          ssize_t n;
+          while ((n = read(pipefd[0], buffer + total, sizeof(buffer) - total - 1)) > 0)
+              total += n;
+          buffer[total] = '\0';
+          close(pipefd[0]);
+
+          if (strstr(buffer, "00 00") || strstr(buffer, "42 42") || strstr(buffer, "05 03"))
+          {
+              printf("Paire invalide detectee (doublon ou ordre inverse)\n");
+              return (1);
+          }
+          return (0);
+      }
+    expected_exit: 0
+
+  - name: "derniere combinaison et fin de ligne propre (98 99)"
+    main: |
+      #include <stdio.h>
+      #include <string.h>
+      #include <unistd.h>
+      void ft_print_comb2(void);
+
+      int main(void)
+      {
+          int pipefd[2];
+          pipe(pipefd);
+          int saved = dup(STDOUT_FILENO);
+          dup2(pipefd[1], STDOUT_FILENO);
+          close(pipefd[1]);
+
+          ft_print_comb2();
+
+          dup2(saved, STDOUT_FILENO);
+          close(saved);
+
+          char buffer[64000];
+          size_t total = 0;
+          ssize_t n;
+          while ((n = read(pipefd[0], buffer + total, sizeof(buffer) - total - 1)) > 0)
+              total += n;
+          buffer[total] = '\0';
+          close(pipefd[0]);
+
+          if (total < 6 || strcmp(buffer + total - 6, "98 99\n") != 0)
+          {
+              printf("Fin incorrecte, obtenu : \"%.20s\"\n",
+                     buffer + (total > 20 ? total - 20 : 0));
+              return (1);
+          }
+          if (buffer[total - 2] == ',' || buffer[total - 2] == ' ')
+          {
+              printf("Virgule ou espace en trop juste avant la fin de ligne\n");
+              return (1);
+          }
+          return (0);
+      }
+    expected_exit: 0
+
+  - name: "nombre total de combinaisons (4950 paires, 4949 separateurs)"
+    main: |
+      #include <stdio.h>
+      #include <unistd.h>
+      void ft_print_comb2(void);
+
+      int main(void)
+      {
+          int pipefd[2];
+          pipe(pipefd);
+          int saved = dup(STDOUT_FILENO);
+          dup2(pipefd[1], STDOUT_FILENO);
+          close(pipefd[1]);
+
+          ft_print_comb2();
+
+          dup2(saved, STDOUT_FILENO);
+          close(saved);
+
+          char buffer[64000];
+          size_t total = 0;
+          ssize_t n;
+          while ((n = read(pipefd[0], buffer + total, sizeof(buffer) - total - 1)) > 0)
+              total += n;
+          buffer[total] = '\0';
+          close(pipefd[0]);
+
+          int count = 0;
+          for (size_t k = 0; k + 1 < total; k++)
+          {
+              if (buffer[k] == ',' && buffer[k + 1] == ' ')
+                  count++;
+          }
+          if (count != 4949)
+          {
+              printf("Nombre de separateurs incorrect : %d (attendu 4949)\n", count);
+              return (1);
+          }
+          return (0);
+      }
+    expected_exit: 0
+
+  - name: "sequence complete exacte (comparaison programmatique)"
+    main: |
+      #include <stdio.h>
+      #include <stdlib.h>
+      #include <string.h>
+      #include <unistd.h>
+      void ft_print_comb2(void);
+
+      int main(void)
+      {
+          int pipefd[2];
+          pipe(pipefd);
+          int saved = dup(STDOUT_FILENO);
+          dup2(pipefd[1], STDOUT_FILENO);
+          close(pipefd[1]);
+
+          ft_print_comb2();
+
+          dup2(saved, STDOUT_FILENO);
+          close(saved);
+
+          char buffer[64000];
+          size_t total = 0;
+          ssize_t n;
+          while ((n = read(pipefd[0], buffer + total, sizeof(buffer) - total - 1)) > 0)
+              total += n;
+          buffer[total] = '\0';
+          close(pipefd[0]);
+
+          char expected[64000];
+          size_t pos = 0;
+          for (int i = 0; i <= 98; i++)
+          {
+              for (int j = i + 1; j <= 99; j++)
+              {
+                  pos += sprintf(expected + pos, "%02d %02d", i, j);
+                  if (!(i == 98 && j == 99))
+                      pos += sprintf(expected + pos, ", ");
+              }
+          }
+          expected[pos++] = '\n';
+          expected[pos] = '\0';
+
+          if (strcmp(buffer, expected) != 0)
+          {
+              size_t k = 0;
+              while (expected[k] && buffer[k] && expected[k] == buffer[k])
+                  k++;
+              printf("Difference a la position %zu\n", k);
+              printf("attendu  : \"%.30s\"\n", expected + k);
+              printf("obtenu   : \"%.30s\"\n", buffer + k);
+              return (1);
+          }
+          return (0);
+      }
+    expected_exit: 0
