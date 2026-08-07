@@ -1,0 +1,20 @@
+name: ft_print_reverse_alphabet
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_print_reverse_alphabet.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  void ft_print_reverse_alphabet(void);
+
+tests:
+  - name: "alphabet complet decroissant"
+    body: |
+      ft_print_reverse_alphabet();
+    expected_stdout: "zyxwvutsrqponmlkjihgfedcba"
+    expected_exit: 0

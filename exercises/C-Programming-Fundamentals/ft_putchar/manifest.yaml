@@ -1,0 +1,44 @@
+name: ft_putchar
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_putchar.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  void ft_putchar(char c);
+
+tests:
+  - name: "lettre minuscule"
+    body: |
+      ft_putchar('a');
+    expected_stdout: "a"
+    expected_exit: 0
+
+  - name: "lettre majuscule"
+    body: |
+      ft_putchar('Z');
+    expected_stdout: "Z"
+    expected_exit: 0
+
+  - name: "chiffre"
+    body: |
+      ft_putchar('7');
+    expected_stdout: "7"
+    expected_exit: 0
+
+  - name: "caractere special"
+    body: |
+      ft_putchar('!');
+    expected_stdout: "!"
+    expected_exit: 0
+
+  - name: "espace"
+    body: |
+      ft_putchar(' ');
+    expected_stdout: " "
+    expected_exit: 0

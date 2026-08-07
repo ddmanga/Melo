@@ -1,0 +1,20 @@
+name: ft_print_numbers
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_print_numbers.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  void ft_print_numbers(void);
+
+tests:
+  - name: "chiffres croissants 0 a 9"
+    body: |
+      ft_print_numbers();
+    expected_stdout: "0123456789"
+    expected_exit: 0
