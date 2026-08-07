@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 from core.report import print_results
-from core.runner import run_exercise
+from core.runner import run_exercise, find_targets
 from rich.console import Console
 from rich.panel import Panel
 
@@ -26,10 +26,21 @@ SESSIONS_DIR = ROOT / "exam" / "sessions"
 
 
 def cmd_test(args):
-    student_dir = Path(args.student_dir).resolve()
-    results = run_exercise(args.exercise, student_dir, EXERCISES_ROOT, timeout=args.timeout)
-    ok = print_results(args.exercise, results)
-    sys.exit(0 if ok else 1)
+    student_dir = Path(args.student_dir).resolve() if args.student_dir else ROOT.parent
+    exercise_dirs = find_targets(EXERCISES_ROOT, args.exercise)
+
+    if not exercise_dirs:
+        print(f"'{args.exercise}' introuvable (ni exercice, ni module) dans {EXERCISES_ROOT}")
+        sys.exit(1)
+
+    all_ok = True
+    for exo_dir in exercise_dirs:
+        exo_name = exo_dir.relative_to(EXERCISES_ROOT).as_posix()
+        results = run_exercise(exo_name, student_dir, EXERCISES_ROOT, timeout=args.timeout)
+        ok = print_results(exo_name, results)
+        all_ok = all_ok and ok
+
+    sys.exit(0 if all_ok else 1)
 
 def cmd_list(args):
     print("Exercices disponibles :")
@@ -40,9 +51,8 @@ def cmd_list(args):
 
 
 def cmd_exam(args):
-    student_dir = Path(args.student_dir).resolve()
+    student_dir = Path(args.student_dir).resolve() if args.student_dir else ROOT.parent
     run_exam(EXERCISES_ROOT, student_dir, args.tag, args.nb, args.duration, SESSIONS_DIR)
-
 
 def cmd_ai_explain(args):
     from ai.client import Assistant
@@ -58,7 +68,7 @@ def cmd_ai_debug(args):
     from ai.client import Assistant
     from ai.prompts import SYSTEM_DEBUG
 
-    student_dir = Path(args.student_dir).resolve()
+    student_dir = Path(args.student_dir).resolve() if args.student_dir else ROOT.parent
     hint = f"Dossier source de l'élève : {student_dir}\n(compile son code toi-même via gdb si besoin, ou demande-lui le chemin du binaire)"
     assistant = Assistant()
     answer = assistant.ask(
@@ -108,14 +118,14 @@ def cmd_chat(args):
             )
         )
 
-
 def main():
     parser = argparse.ArgumentParser(prog="piscine-tester")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_test = sub.add_parser("test", help="teste un exercice")
     p_test.add_argument("exercise")
-    p_test.add_argument("student_dir")
+    p_test.add_argument("student_dir", nargs="?", default=None,
+                         help="dossier du rendu (défaut : dossier parent de Meloweo/)")
     p_test.add_argument("--timeout", type=int, default=5)
     p_test.set_defaults(func=cmd_test)
 
@@ -123,7 +133,8 @@ def main():
     p_list.set_defaults(func=cmd_list)
 
     p_exam = sub.add_parser("exam", help="lance un examen simulé")
-    p_exam.add_argument("student_dir")
+    p_exam.add_argument("student_dir", nargs="?", default=None,
+                         help="dossier du rendu (défaut : dossier parent de Meloweo/)")
     p_exam.add_argument("--tag", default="exam_C_00")
     p_exam.add_argument("--nb", type=int, default=3)
     p_exam.add_argument("--duration", type=int, default=180)
@@ -142,13 +153,13 @@ def main():
 
     p_debug = sub.add_parser("ai-debug", help="aide au debug (gdb) via le LLM")
     p_debug.add_argument("exercise")
-    p_debug.add_argument("student_dir")
+    p_debug.add_argument("student_dir", nargs="?", default=None,
+                          help="dossier du rendu (défaut : dossier parent de Meloweo/)")
     p_debug.add_argument("message", help="décris ton problème")
     p_debug.set_defaults(func=cmd_ai_debug)
 
     args = parser.parse_args()
     args.func(args)
-
 
 if __name__ == "__main__":
     main()

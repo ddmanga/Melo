@@ -152,6 +152,27 @@ def find_exercise(exercises_root: Path, exercise_name: str) -> Path:
         f"Impossible de trouver l'exercice '{exercise_name}' dans '{exercises_root}'."
     )
 
+def find_targets(exercises_root: Path, target: str) -> List[Path]:
+    """Résout `target` en une liste de dossiers d'exercices (chemins absolus).
+
+    - Si `target` correspond à un exercice précis (dossier avec manifest.yaml),
+      renvoie ce seul dossier.
+    - Sinon, si `target` correspond à un dossier existant contenant des
+      exercices (un module), renvoie tous les exercices trouvés dedans.
+    - Sinon, renvoie une liste vide.
+    """
+    for path in exercises_root.rglob(target):
+        if path.is_dir() and (path / "manifest.yaml").exists():
+            return [path]
+
+    for path in exercises_root.rglob(target):
+        if path.is_dir():
+            found = sorted(p.parent for p in path.rglob("manifest.yaml"))
+            if found:
+                return found
+
+    return []
+
 def run_exercise(exercise_name: str, student_dir: Path, exercises_root: Path,
                  timeout: int = 5) -> List[TestResult]:
     exercise_dir = find_exercise(exercises_root, exercise_name)
