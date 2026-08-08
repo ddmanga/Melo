@@ -194,7 +194,7 @@ tests:
           buffer[total] = '\0';
           close(pipefd[0]);
 
-          if (total < 6 || strcmp(buffer + total - 6, "98 99\n") != 0)
+          if (total < 6 || strcmp(buffer + total - 5, "98 99") != 0)
           {
               printf("Fin incorrecte, obtenu : \"%.20s\"\n",
                      buffer + (total > 20 ? total - 20 : 0));
@@ -291,7 +291,6 @@ tests:
                       pos += sprintf(expected + pos, ", ");
               }
           }
-          expected[pos++] = '\n';
           expected[pos] = '\0';
 
           if (strcmp(buffer, expected) != 0)
