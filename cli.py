@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+
 """Point d'entrée du testeur piscine 42.
 
 Usage :
   ./cli.py list
   ./cli.py test ft_strdup /chemin/vers/rendu/
-  ./cli.py exam /chemin/vers/rendu/ --tag exam_C_00 --nb 3 --duration 180
+  ./cli.py exam
   ./cli.py ai-explain ft_strdup
   ./cli.py ai-debug ft_strdup /chemin/vers/rendu/ "segfault sur une chaine vide"
 """
@@ -18,11 +19,11 @@ from rich.console import Console
 from rich.panel import Panel
 
 console = Console()
-from exam.simulator import run_exam
 
 ROOT = Path(__file__).parent
 EXERCISES_ROOT = ROOT / "exercises"
-SESSIONS_DIR = ROOT / "exam" / "sessions"
+EXAMS_ROOT = ROOT / "exams"
+RENDU_ROOT = ROOT / "rendu"
 
 
 def cmd_test(args):
@@ -51,8 +52,8 @@ def cmd_list(args):
 
 
 def cmd_exam(args):
-    student_dir = Path(args.student_dir).resolve() if args.student_dir else ROOT.parent
-    run_exam(EXERCISES_ROOT, student_dir, args.tag, args.nb, args.duration, SESSIONS_DIR)
+    from exam.interactive import run_interactive_exam
+    run_interactive_exam(EXAMS_ROOT, EXERCISES_ROOT, RENDU_ROOT)
 
 def cmd_ai_explain(args):
     from ai.client import Assistant
@@ -132,12 +133,7 @@ def main():
     p_list = sub.add_parser("list", help="liste les exercices disponibles")
     p_list.set_defaults(func=cmd_list)
 
-    p_exam = sub.add_parser("exam", help="lance un examen simulé")
-    p_exam.add_argument("student_dir", nargs="?", default=None,
-                         help="dossier du rendu (défaut : dossier parent de Meloweo/)")
-    p_exam.add_argument("--tag", default="exam_C_00")
-    p_exam.add_argument("--nb", type=int, default=3)
-    p_exam.add_argument("--duration", type=int, default=180)
+    p_exam = sub.add_parser("exam", help="lance le mode examen interactif (menu, niveaux, next/re/test)")
     p_exam.set_defaults(func=cmd_exam)
 
     p_explain = sub.add_parser("ai-explain", help="explique le but d'un exercice")

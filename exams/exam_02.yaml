@@ -1,0 +1,8 @@
+title: "Exam 02"
+icon: "📋"
+
+levels:
+  0:
+    - ft_print_comb2
+  1:
+    - ft_putnbr
