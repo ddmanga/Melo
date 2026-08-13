@@ -1,0 +1,64 @@
+name: ft_zero
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_zero.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  #include <stdio.h>
+  #include <string.h>
+  void ft_zero(char *str);
+
+tests:
+  - name: "mot simple"
+    body: |
+      char s[] = "salut";
+      ft_zero(s);
+      printf("%s\n", s);
+    expected_stdout: "00000\n"
+    expected_exit: 0
+
+  - name: "chaine vide"
+    body: |
+      char s[] = "";
+      ft_zero(s);
+      printf("[%s]\n", s);
+    expected_stdout: "[]\n"
+    expected_exit: 0
+
+  - name: "un seul caractere"
+    body: |
+      char s[] = "a";
+      ft_zero(s);
+      printf("%s\n", s);
+    expected_stdout: "0\n"
+    expected_exit: 0
+
+  - name: "chaine avec espaces et chiffres"
+    body: |
+      char s[] = "a1 b2";
+      ft_zero(s);
+      printf("%s\n", s);
+    expected_stdout: "00000\n"
+    expected_exit: 0
+
+  - name: "garde la longueur d'origine (pas de depassement)"
+    body: |
+      char s[] = "hello";
+      ft_zero(s);
+      printf("%d\n", (int)strlen(s));
+    expected_stdout: "5\n"
+    expected_exit: 0
+
+  - name: "s'arrete au null d'origine, ne va pas au-dela"
+    body: |
+      char s[8] = {'a', 'b', 'c', '\0', 'X', 'Y', 'Z', '\0'};
+      ft_zero(s);
+      printf("%s|%c%c%c\n", s, s[4], s[5], s[6]);
+    expected_stdout: "000|XYZ\n"
+    expected_exit: 0

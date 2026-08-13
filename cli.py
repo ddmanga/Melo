@@ -22,6 +22,7 @@ console = Console()
 
 ROOT = Path(__file__).parent
 EXERCISES_ROOT = ROOT / "exercises"
+EXERCISES_EXAM_ROOT = ROOT / "exercises_exam"
 EXAMS_ROOT = ROOT / "exams"
 RENDU_ROOT = ROOT / "rendu"
 
@@ -53,7 +54,7 @@ def cmd_list(args):
 
 def cmd_exam(args):
     from exam.interactive import run_interactive_exam
-    run_interactive_exam(EXAMS_ROOT, EXERCISES_ROOT, RENDU_ROOT)
+    run_interactive_exam(EXAMS_ROOT, EXERCISES_EXAM_ROOT, RENDU_ROOT)
 
 def cmd_ai_explain(args):
     from ai.client import Assistant

@@ -1,0 +1,71 @@
+name: ft_capitalize
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_capitalize.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  #include <stdio.h>
+  void ft_capitalize(char *str);
+
+tests:
+  - name: "mot tout minuscule"
+    body: |
+      char s[] = "salut";
+      ft_capitalize(s);
+      printf("%s\n", s);
+    expected_stdout: "Salut\n"
+    expected_exit: 0
+
+  - name: "mot tout majuscule"
+    body: |
+      char s[] = "HELLO";
+      ft_capitalize(s);
+      printf("%s\n", s);
+    expected_stdout: "Hello\n"
+    expected_exit: 0
+
+  - name: "mixte majuscule et minuscule"
+    body: |
+      char s[] = "hELLO WoRLD";
+      ft_capitalize(s);
+      printf("%s\n", s);
+    expected_stdout: "Hello world\n"
+    expected_exit: 0
+
+  - name: "chaine vide"
+    body: |
+      char s[] = "";
+      ft_capitalize(s);
+      printf("[%s]\n", s);
+    expected_stdout: "[]\n"
+    expected_exit: 0
+
+  - name: "un seul caractere minuscule"
+    body: |
+      char s[] = "a";
+      ft_capitalize(s);
+      printf("%s\n", s);
+    expected_stdout: "A\n"
+    expected_exit: 0
+
+  - name: "premier caractere non alphabetique"
+    body: |
+      char s[] = "1abc";
+      ft_capitalize(s);
+      printf("%s\n", s);
+    expected_stdout: "1abc\n"
+    expected_exit: 0
+
+  - name: "chiffres et symboles au milieu"
+    body: |
+      char s[] = "HeLLo 123 WoRLD!";
+      ft_capitalize(s);
+      printf("%s\n", s);
+    expected_stdout: "Hello 123 world!\n"
+    expected_exit: 0

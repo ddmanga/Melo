@@ -59,8 +59,75 @@ def get_exercise_context(exercise_dir: Path) -> str:
     return manifest.read_text(encoding="utf-8") if manifest.exists() else ""
 
 
-# schéma "tools" au format attendu par l'API OpenAI (function calling)
-TOOLS_SCHEMA = [
+# racine du dossier des exercices (même logique que cli.py / EXERCISES_ROOT)
+EXERCISES_ROOT = Path(__file__).parent.parent / "exercises"
+
+
+def list_exercise_names() -> List[str]:
+    """Noms des exercices disponibles (ceux qui ont un manifest.yaml),
+    récursif pour supporter les exercices rangés par module (module/exo).
+    """
+    if not EXERCISES_ROOT.exists():
+        return []
+    return sorted(
+        p.parent.relative_to(EXERCISES_ROOT).as_posix()
+        for p in EXERCISES_ROOT.rglob("manifest.yaml")
+    )
+
+def get_exercise_subject(exercise_name: str) -> str:
+    """Sujet d'un exercice donné par son nom (utilisé par le LLM via function
+    calling, pour ne pas obliger l'élève à copier-coller l'énoncé lui-même).
+    """
+    exo_dir = EXERCISES_ROOT / exercise_name
+    if not exo_dir.exists() or not (exo_dir / "manifest.yaml").exists():
+        available = ", ".join(list_exercise_names()) or "(aucun)"
+        return (
+            f"Exercice '{exercise_name}' introuvable. "
+            f"Exercices disponibles : {available}"
+        )
+    context = get_exercise_context(exo_dir)
+    return context or f"Aucun README ni manifest lisible pour '{exercise_name}'."
+
+
+# outils liés aux exercices : lister / lire un sujet. Toujours disponibles
+# en conversation, pour que l'IA aille chercher elle-même le bon sujet.
+EXERCISE_TOOLS_SCHEMA = [
+    {
+        "type": "function",
+        "function": {
+            "name": "list_exercises",
+            "description": (
+                "Liste les noms de tous les exercices disponibles dans la piscine. "
+                "À utiliser si l'élève ne donne pas le nom exact de l'exercice."
+            ),
+            "parameters": {"type": "object", "properties": {}},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_exercise_subject",
+            "description": (
+                "Renvoie le sujet complet (README ou manifest) d'un exercice donné "
+                "par son nom exact, pour pouvoir l'expliquer à l'élève sans qu'il "
+                "ait à le copier-coller lui-même."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "exercise_name": {
+                        "type": "string",
+                        "description": "nom exact de l'exercice, ex: ft_strdup",
+                    },
+                },
+                "required": ["exercise_name"],
+            },
+        },
+    },
+]
+
+# outil gdb, réservé au mode debug (potentiellement coûteux / sensible)
+DEBUG_TOOLS_SCHEMA = [
     {
         "type": "function",
         "function": {
@@ -85,3 +152,6 @@ TOOLS_SCHEMA = [
         },
     }
 ]
+
+# alias conservé pour compat (ancien nom utilisé ailleurs éventuellement)
+TOOLS_SCHEMA = DEBUG_TOOLS_SCHEMA

@@ -1,0 +1,50 @@
+name: ft_print_param
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_print_param.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  void ft_print_param(char c);
+
+tests:
+  - name: "lettre minuscule"
+    body: |
+      ft_print_param('a');
+    expected_stdout: "a"
+    expected_exit: 0
+
+  - name: "lettre majuscule"
+    body: |
+      ft_print_param('Z');
+    expected_stdout: "Z"
+    expected_exit: 0
+
+  - name: "chiffre"
+    body: |
+      ft_print_param('7');
+    expected_stdout: "7"
+    expected_exit: 0
+
+  - name: "caractere special"
+    body: |
+      ft_print_param('!');
+    expected_stdout: "!"
+    expected_exit: 0
+
+  - name: "espace"
+    body: |
+      ft_print_param(' ');
+    expected_stdout: " "
+    expected_exit: 0
+
+  - name: "caractere null"
+    body: |
+      ft_print_param('\0');
+    expected_stdout: "\0"
+    expected_exit: 0

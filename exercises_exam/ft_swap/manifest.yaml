@@ -1,0 +1,70 @@
+name: ft_swap
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_swap.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  #include <stdio.h>
+  void ft_swap(int *a, int *b);
+
+tests:
+  - name: "echange simple"
+    body: |
+      int x = 4;
+      int y = 5;
+      ft_swap(&x, &y);
+      printf("%d %d\n", x, y);
+    expected_stdout: "5 4\n"
+    expected_exit: 0
+
+  - name: "valeurs negatives"
+    body: |
+      int x = -10;
+      int y = 20;
+      ft_swap(&x, &y);
+      printf("%d %d\n", x, y);
+    expected_stdout: "20 -10\n"
+    expected_exit: 0
+
+  - name: "meme valeur des deux cotes"
+    body: |
+      int x = 7;
+      int y = 7;
+      ft_swap(&x, &y);
+      printf("%d %d\n", x, y);
+    expected_stdout: "7 7\n"
+    expected_exit: 0
+
+  - name: "zero et negatif"
+    body: |
+      int x = 0;
+      int y = -1;
+      ft_swap(&x, &y);
+      printf("%d %d\n", x, y);
+    expected_stdout: "-1 0\n"
+    expected_exit: 0
+
+  - name: "grandes valeurs (bornes int)"
+    body: |
+      int x = 2147483647;
+      int y = -2147483647;
+      ft_swap(&x, &y);
+      printf("%d %d\n", x, y);
+    expected_stdout: "-2147483647 2147483647\n"
+    expected_exit: 0
+
+  - name: "double appel revient a l'etat initial"
+    body: |
+      int x = 1;
+      int y = 2;
+      ft_swap(&x, &y);
+      ft_swap(&x, &y);
+      printf("%d %d\n", x, y);
+    expected_stdout: "1 2\n"
+    expected_exit: 0

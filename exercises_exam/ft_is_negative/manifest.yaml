@@ -1,0 +1,44 @@
+name: ft_is_negative
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_is_negative.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  void ft_is_negative(int n);
+
+tests:
+  - name: "entier negatif"
+    body: |
+      ft_is_negative(-5);
+    expected_stdout: "N"
+    expected_exit: 0
+
+  - name: "entier positif"
+    body: |
+      ft_is_negative(5);
+    expected_stdout: "P"
+    expected_exit: 0
+
+  - name: "zero (considere positif)"
+    body: |
+      ft_is_negative(0);
+    expected_stdout: "P"
+    expected_exit: 0
+
+  - name: "grand negatif"
+    body: |
+      ft_is_negative(-2147483647);
+    expected_stdout: "N"
+    expected_exit: 0
+
+  - name: "grand positif"
+    body: |
+      ft_is_negative(2147483647);
+    expected_stdout: "P"
+    expected_exit: 0

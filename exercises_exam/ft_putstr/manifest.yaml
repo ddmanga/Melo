@@ -1,0 +1,54 @@
+name: ft_putstr
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_putstr.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  #include <unistd.h>
+  void ft_putstr(char *str);
+
+tests:
+  - name: "mot simple"
+    body: |
+      ft_putstr("hello");
+    expected_stdout: "hello"
+    expected_exit: 0
+
+  - name: "chaine vide"
+    body: |
+      ft_putstr("");
+    expected_stdout: ""
+    expected_exit: 0
+
+  - name: "phrase avec espaces"
+    body: |
+      ft_putstr("bonjour le monde");
+    expected_stdout: "bonjour le monde"
+    expected_exit: 0
+
+  - name: "caracteres speciaux"
+    body: |
+      ft_putstr("a1 !@#\t2");
+    expected_stdout: "a1 !@#\t2"
+    expected_exit: 0
+
+  - name: "pas de retour a la ligne ajoute"
+    body: |
+      ft_putstr("test");
+      write(1, "|FIN", 4);
+    expected_stdout: "test|FIN"
+    expected_exit: 0
+
+  - name: "s'arrete au premier null"
+    body: |
+      char s[6] = {'a', 'b', '\0', 'c', 'd', '\0'};
+      ft_putstr(s);
+      write(1, "|FIN", 4);
+    expected_stdout: "ab|FIN"
+    expected_exit: 0

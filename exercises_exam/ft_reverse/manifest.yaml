@@ -1,0 +1,72 @@
+name: ft_reverse
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_reverse.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  #include <stdio.h>
+  void ft_reverse(char *str);
+
+tests:
+  - name: "mot simple"
+    body: |
+      char s[] = "salut";
+      ft_reverse(s);
+      printf("%s\n", s);
+    expected_stdout: "tulas\n"
+    expected_exit: 0
+
+  - name: "chaine vide"
+    body: |
+      char s[] = "";
+      ft_reverse(s);
+      printf("[%s]\n", s);
+    expected_stdout: "[]\n"
+    expected_exit: 0
+
+  - name: "un seul caractere"
+    body: |
+      char s[] = "a";
+      ft_reverse(s);
+      printf("%s\n", s);
+    expected_stdout: "a\n"
+    expected_exit: 0
+
+  - name: "longueur paire"
+    body: |
+      char s[] = "abcd";
+      ft_reverse(s);
+      printf("%s\n", s);
+    expected_stdout: "dcba\n"
+    expected_exit: 0
+
+  - name: "longueur impaire (caractere central inchange)"
+    body: |
+      char s[] = "abcde";
+      ft_reverse(s);
+      printf("%s\n", s);
+    expected_stdout: "edcba\n"
+    expected_exit: 0
+
+  - name: "phrase avec espaces"
+    body: |
+      char s[] = "bonjour toi";
+      ft_reverse(s);
+      printf("%s\n", s);
+    expected_stdout: "iot ruojnob\n"
+    expected_exit: 0
+
+  - name: "double appel revient a l'original"
+    body: |
+      char s[] = "hello";
+      ft_reverse(s);
+      ft_reverse(s);
+      printf("%s\n", s);
+    expected_stdout: "hello\n"
+    expected_exit: 0

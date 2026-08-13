@@ -2,8 +2,29 @@ title: "Exam 01"
 icon: "🚀"
 
 levels:
-  0:
-    - ft_putchar
   1:
+    - ft_print_a
+    - ft_print_param
+  2:
+    - ft_print_param
+    - ft_print_alphabet
+    - ft_is_negative
+    - ft_print_reverse_alphabet
+  3:
+    - ft_swap
+  4:
     - ft_putnbr
-    - ft_print_comb2
+  5:
+    - fizzbuzz
+  6:
+    - ft_strlen
+    - ft_putstr
+  7:
+    - ft_zero
+  8:
+    - ft_reverse
+    - ft_capitalize
+  9:
+    - ft_rev_params
+  10:
+    - ft_split
