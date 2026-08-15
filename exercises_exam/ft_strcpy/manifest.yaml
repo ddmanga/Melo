@@ -1,0 +1,95 @@
+name: ft_strcpy
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_strcpy.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  #include <stdio.h>
+  #include <string.h>
+  char *ft_strcpy(char *dest, char *src);
+
+tests:
+  - name: "mot simple"
+    body: |
+      char buf[20];
+      ft_strcpy(buf, "hello");
+      printf("%s\n", buf);
+    expected_stdout: "hello\n"
+    expected_exit: 0
+
+  - name: "chaine vide"
+    body: |
+      char buf[20];
+      ft_strcpy(buf, "");
+      printf("[%s]\n", buf);
+    expected_stdout: "[]\n"
+    expected_exit: 0
+
+  - name: "retourne bien l'adresse de dest"
+    body: |
+      char buf[20];
+      char *ret = ft_strcpy(buf, "hello");
+      printf("%d\n", ret == buf);
+    expected_stdout: "1\n"
+    expected_exit: 0
+
+  - name: "copie le null terminator (pas de residu apres)"
+    body: |
+      char buf[20];
+      int i;
+      i = 0;
+      while (i < 20)
+      {
+          buf[i] = 'X';
+          i++;
+      }
+      ft_strcpy(buf, "ab");
+      printf("%d\n", buf[2] == '\0');
+    expected_stdout: "1\n"
+    expected_exit: 0
+
+  - name: "ne touche pas au-dela du null de src"
+    body: |
+      char buf[20];
+      int i;
+      i = 0;
+      while (i < 20)
+      {
+          buf[i] = 'Z';
+          i++;
+      }
+      ft_strcpy(buf, "ab");
+      printf("%c\n", buf[3]);
+    expected_stdout: "Z\n"
+    expected_exit: 0
+
+  - name: "chaine longue"
+    body: |
+      char src[301];
+      char dest[301];
+      int i;
+      i = 0;
+      while (i < 300)
+      {
+          src[i] = 'a' + (i % 26);
+          i++;
+      }
+      src[300] = '\0';
+      ft_strcpy(dest, src);
+      printf("%d\n", strcmp(src, dest) == 0);
+    expected_stdout: "1\n"
+    expected_exit: 0
+
+  - name: "caracteres speciaux"
+    body: |
+      char buf[20];
+      ft_strcpy(buf, "a 1\t!@#");
+      printf("%s\n", buf);
+    expected_stdout: "a 1\t!@#\n"
+    expected_exit: 0

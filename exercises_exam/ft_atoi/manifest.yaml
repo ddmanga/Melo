@@ -1,0 +1,93 @@
+name: ft_atoi
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_atoi.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  #include <stdio.h>
+  int ft_atoi(const char *str);
+
+tests:
+  - name: "nombre positif simple"
+    body: |
+      printf("%d\n", ft_atoi("42"));
+    expected_stdout: "42\n"
+    expected_exit: 0
+
+  - name: "nombre negatif simple"
+    body: |
+      printf("%d\n", ft_atoi("-42"));
+    expected_stdout: "-42\n"
+    expected_exit: 0
+
+  - name: "signe plus explicite"
+    body: |
+      printf("%d\n", ft_atoi("+123"));
+    expected_stdout: "123\n"
+    expected_exit: 0
+
+  - name: "espaces et tabulations en debut"
+    body: |
+      printf("%d\n", ft_atoi("   \t  -42"));
+    expected_stdout: "-42\n"
+    expected_exit: 0
+
+  - name: "arret au premier caractere non chiffre"
+    body: |
+      printf("%d\n", ft_atoi("42abc"));
+    expected_stdout: "42\n"
+    expected_exit: 0
+
+  - name: "aucun chiffre (retourne 0)"
+    body: |
+      printf("%d\n", ft_atoi("hello"));
+    expected_stdout: "0\n"
+    expected_exit: 0
+
+  - name: "chaine vide"
+    body: |
+      printf("%d\n", ft_atoi(""));
+    expected_stdout: "0\n"
+    expected_exit: 0
+
+  - name: "zero"
+    body: |
+      printf("%d\n", ft_atoi("0"));
+    expected_stdout: "0\n"
+    expected_exit: 0
+
+  - name: "zeros non significatifs devant"
+    body: |
+      printf("%d\n", ft_atoi("007"));
+    expected_stdout: "7\n"
+    expected_exit: 0
+
+  - name: "INT_MAX (borne haute)"
+    body: |
+      printf("%d\n", ft_atoi("2147483647"));
+    expected_stdout: "2147483647\n"
+    expected_exit: 0
+
+  - name: "INT_MIN (borne basse)"
+    body: |
+      printf("%d\n", ft_atoi("-2147483648"));
+    expected_stdout: "-2147483648\n"
+    expected_exit: 0
+
+  - name: "signe seul sans chiffre (retourne 0)"
+    body: |
+      printf("%d\n", ft_atoi("-"));
+    expected_stdout: "0\n"
+    expected_exit: 0
+
+  - name: "espaces uniquement"
+    body: |
+      printf("%d\n", ft_atoi("   "));
+    expected_stdout: "0\n"
+    expected_exit: 0

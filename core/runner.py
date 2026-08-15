@@ -54,6 +54,12 @@ def _prepare_workdir(exercise_dir: Path, student_dir: Path, test: dict,
             shutil.copy(header, tmp / header.name)
 
     main_path = tmp / "main.c"
+    if manifest.get("own_main"):
+        # L'élève écrit son propre main(argc, argv) dans ses sources
+        # (ex: programmes en ligne de commande comme first_word).
+        # On ne génère aucun fichier main.c pour éviter un conflit
+        # de définition de main() à la compilation.
+        return
     if "main" in test:
         main_path.write_text(test["main"], encoding="utf-8")
     elif "program" in test:
@@ -70,7 +76,6 @@ def _prepare_workdir(exercise_dir: Path, student_dir: Path, test: dict,
         raise ValueError(
             f"test '{test['name']}' n'a ni 'main', ni 'program', ni 'body'"
         )
-
 
 def _compile(tmp: Path, manifest: dict) -> Optional[str]:
     """Compile toutes les sources dans tmp. Retourne le message d'erreur, ou None si OK."""

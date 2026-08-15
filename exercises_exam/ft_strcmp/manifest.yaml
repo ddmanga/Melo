@@ -1,0 +1,79 @@
+name: ft_strcmp
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_strcmp.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  #include <stdio.h>
+  int ft_strcmp(char *s1, char *s2);
+
+  static void print_sign(int n)
+  {
+      if (n == 0)
+          printf("0\n");
+      else if (n < 0)
+          printf("negatif\n");
+      else
+          printf("positif\n");
+  }
+
+tests:
+  - name: "chaines identiques"
+    body: |
+      print_sign(ft_strcmp("abc", "abc"));
+    expected_stdout: "0\n"
+    expected_exit: 0
+
+  - name: "s1 plus petite (differe au dernier caractere)"
+    body: |
+      print_sign(ft_strcmp("abc", "abd"));
+    expected_stdout: "negatif\n"
+    expected_exit: 0
+
+  - name: "s1 plus grande (differe au dernier caractere)"
+    body: |
+      print_sign(ft_strcmp("abd", "abc"));
+    expected_stdout: "positif\n"
+    expected_exit: 0
+
+  - name: "chaines vides"
+    body: |
+      print_sign(ft_strcmp("", ""));
+    expected_stdout: "0\n"
+    expected_exit: 0
+
+  - name: "s1 vide, s2 non vide"
+    body: |
+      print_sign(ft_strcmp("", "a"));
+    expected_stdout: "negatif\n"
+    expected_exit: 0
+
+  - name: "s1 non vide, s2 vide"
+    body: |
+      print_sign(ft_strcmp("a", ""));
+    expected_stdout: "positif\n"
+    expected_exit: 0
+
+  - name: "s1 prefixe de s2 (plus courte)"
+    body: |
+      print_sign(ft_strcmp("abc", "abcdef"));
+    expected_stdout: "negatif\n"
+    expected_exit: 0
+
+  - name: "s2 prefixe de s1 (plus courte)"
+    body: |
+      print_sign(ft_strcmp("abcdef", "abc"));
+    expected_stdout: "positif\n"
+    expected_exit: 0
+
+  - name: "difference de casse"
+    body: |
+      print_sign(ft_strcmp("Abc", "abc"));
+    expected_stdout: "negatif\n"
+    expected_exit: 0

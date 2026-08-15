@@ -35,7 +35,7 @@ def _load_exams(exams_root: Path) -> Dict[str, dict]:
     for path in sorted(exams_root.glob("*.yaml")):
         data = yaml.safe_load(path.read_text(encoding="utf-8"))
         data.setdefault("title", path.stem)
-        data.setdefault("icon", "📄")
+        data.setdefault("icon", "🚵")
         exams[path.stem] = data
     return exams
 
@@ -47,7 +47,7 @@ def _choose_exam(exams: Dict[str, dict]) -> dict:
             f"[cyan]{i}[/]. {data['icon']} {data['title']}"
             for i, data in enumerate(ordered, start=1)
         )
-        console.print(Panel(lines, title="Exams disponibles", border_style="blue",
+        console.print(Panel(lines, title="🏔️🏔️Exams disponibles🏔️🏔️", border_style="blue",
                              expand=False, padding=(0, 2)))
         choice = console.input("[cyan]>[/] choix (numéro, q pour quitter) : ").strip()
 
@@ -114,7 +114,7 @@ def _show_readme(exercise_name: str, exercises_exam_root: Path) -> None:
     if not content:
         return
 
-    console.print(Panel(content, title=f"📖 Sujet — {exercise_name}",
+    console.print(Panel(content, title=f"🚵📖 Sujet — {exercise_name}",
                          border_style="cyan", expand=False, padding=(1, 2)))
 
 

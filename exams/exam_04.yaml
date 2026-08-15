@@ -1,4 +1,4 @@
-title: "Exam 01"
+title: "Exam 04"
 icon: "🚵"
 
 levels:
@@ -11,19 +11,29 @@ levels:
     - ft_print_reverse_alphabet
   3:
     - ft_swap
-  4:
     - ft_putnbr
-  5:
-    - fizzbuzz
-  6:
     - ft_strlen
     - ft_putstr
+    - fizzbuzz
+  4:
+    - ft_reverse
+    - ft_strcpy
+    - ft_rev_params
+    - ft_strcmp
+    - ft_strncmp
+  5:
+    - ft_atoi
+  6:
+    - ft_split
   7:
-    - ft_zero
+    - wdmatch
+    - inter
+    - union
   8:
     - ft_reverse
     - ft_capitalize
-  9:
     - ft_rev_params
+  9:
+    - ft_itoa
   10:
-    - ft_split
+    - ft_strdup

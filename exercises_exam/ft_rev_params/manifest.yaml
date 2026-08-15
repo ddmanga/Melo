@@ -1,5 +1,6 @@
 name: ft_rev_params
 tags: ["piscine_c00", "exam_C_00"]
+own_main: true
 
 sources:
   - ft_rev_params.c

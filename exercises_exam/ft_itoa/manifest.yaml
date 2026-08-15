@@ -1,0 +1,89 @@
+name: ft_itoa
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_itoa.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  char *ft_itoa(int n);
+
+tests:
+  - name: "nombre positif"
+    body: |
+      char *s = ft_itoa(123);
+      printf("%s\n", s);
+      free(s);
+    expected_stdout: "123\n"
+    expected_exit: 0
+    check_memory: true
+
+  - name: "nombre negatif"
+    body: |
+      char *s = ft_itoa(-123);
+      printf("%s\n", s);
+      free(s);
+    expected_stdout: "-123\n"
+    expected_exit: 0
+    check_memory: true
+
+  - name: "zero"
+    body: |
+      char *s = ft_itoa(0);
+      printf("%s\n", s);
+      free(s);
+    expected_stdout: "0\n"
+    expected_exit: 0
+    check_memory: true
+
+  - name: "chiffre unique"
+    body: |
+      char *s = ft_itoa(5);
+      printf("%s\n", s);
+      free(s);
+    expected_stdout: "5\n"
+    expected_exit: 0
+    check_memory: true
+
+  - name: "chiffre unique negatif"
+    body: |
+      char *s = ft_itoa(-5);
+      printf("%s\n", s);
+      free(s);
+    expected_stdout: "-5\n"
+    expected_exit: 0
+    check_memory: true
+
+  - name: "INT_MAX (borne haute)"
+    body: |
+      char *s = ft_itoa(2147483647);
+      printf("%s\n", s);
+      free(s);
+    expected_stdout: "2147483647\n"
+    expected_exit: 0
+    check_memory: true
+
+  - name: "INT_MIN (piege classique : -n overflow)"
+    body: |
+      char *s = ft_itoa(-2147483648);
+      printf("%s\n", s);
+      free(s);
+    expected_stdout: "-2147483648\n"
+    expected_exit: 0
+    check_memory: true
+
+  - name: "longueur exacte (pas de depassement de buffer)"
+    body: |
+      char *s = ft_itoa(4200);
+      printf("%zu\n", strlen(s));
+      free(s);
+    expected_stdout: "4\n"
+    expected_exit: 0
+    check_memory: true

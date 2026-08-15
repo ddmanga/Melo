@@ -1,0 +1,42 @@
+name: union
+tags: ["piscine_c00", "exam_C_00"]
+own_main: true
+
+sources:
+  - union.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+tests:
+  - name: "deux chaines, caracteres communs et uniques"
+    args: ["abcde", "6azert"]
+    expected_stdout: "a\nb\nc\nd\ne\n6\nz\nr\nt\n"
+    expected_exit: 0
+
+  - name: "doublons dans la meme chaine ignores"
+    args: ["aabbcc", "cba"]
+    expected_stdout: "a\nb\nc\n"
+    expected_exit: 0
+
+  - name: "deux chaines vides"
+    args: ["", ""]
+    expected_stdout: ""
+    expected_exit: 0
+
+  - name: "pas assez d'arguments"
+    args: ["abc"]
+    expected_stdout: "\n"
+    expected_exit: 0
+
+  - name: "aucun argument"
+    args: []
+    expected_stdout: "\n"
+    expected_exit: 0
+
+  - name: "trop d'arguments"
+    args: ["a", "b", "c"]
+    expected_stdout: "\n"
+    expected_exit: 0

@@ -1,4 +1,4 @@
-title: "Exam 02"
+title: "Exam 03"
 icon: "🚵"
 
 levels:
@@ -6,13 +6,17 @@ levels:
     - ft_putnbr
     - ft_putstr
     - ft_strlen
+    - ft_is_negative
+    - ft_print_alphabet
+    - ft_print_reverse_alphabet
   2:
     - fizzbuzz
+    - first_word
   3:
     - ft_reverse
     - ft_strcpy
+    - ft_rev_params
   4:
-    - first_word
     - rotone
   5:
     - ft_split
@@ -24,7 +28,8 @@ levels:
   8:
     - wdmatch
     - ft_strcmp
-  9:
     - ft_strncmp
-  10:
+  9:
     - ft_strrev
+  10:
+    - ft_itoa

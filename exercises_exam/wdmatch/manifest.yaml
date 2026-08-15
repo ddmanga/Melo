@@ -1,0 +1,57 @@
+name: wdmatch
+tags: ["piscine_c00", "exam_C_00"]
+own_main: true
+
+sources:
+  - wdmatch.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+tests:
+  - name: "sous-sequence trouvee (exemple du sujet)"
+    args: ["faya", "fgvvfdxcacpolhyghbreda"]
+    expected_stdout: "faya\n"
+    expected_exit: 0
+
+  - name: "sous-sequence non trouvee (dernier caractere manquant)"
+    args: ["faya", "fgvvfdxcacpolhyghbred"]
+    expected_stdout: "\n"
+    expected_exit: 0
+
+  - name: "mot avec espace (exemple du sujet)"
+    args: ["quarante deux", "qfqfsudf arzgsayns tsregfdgs sjytdekuoixq "]
+    expected_stdout: "quarante deux\n"
+    expected_exit: 0
+
+  - name: "aucun match possible (exemple du sujet)"
+    args: ["error", "rrerrrfiiljdfxjyuifrrvcoojh"]
+    expected_stdout: "\n"
+    expected_exit: 0
+
+  - name: "aucun argument"
+    args: []
+    expected_stdout: "\n"
+    expected_exit: 0
+
+  - name: "un seul argument"
+    args: ["faya"]
+    expected_stdout: "\n"
+    expected_exit: 0
+
+  - name: "mot vide (toujours une sous-sequence valide)"
+    args: ["", "abc"]
+    expected_stdout: "\n"
+    expected_exit: 0
+
+  - name: "mot identique a la phrase"
+    args: ["abc", "abc"]
+    expected_stdout: "abc\n"
+    expected_exit: 0
+
+  - name: "sensible a la casse"
+    args: ["ABC", "abc"]
+    expected_stdout: "\n"
+    expected_exit: 0

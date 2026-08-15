@@ -1,0 +1,71 @@
+name: ft_strrev
+tags: ["piscine_c00", "exam_C_00"]
+
+sources:
+  - ft_strrev.c
+
+compile:
+  compiler: cc
+  flags: ["-Wall", "-Wextra", "-Werror"]
+  extra: []
+
+prelude: |
+  #include <stdio.h>
+  char *ft_strrev(char *str);
+
+tests:
+  - name: "mot simple"
+    body: |
+      char s[] = "salut";
+      ft_strrev(s);
+      printf("%s\n", s);
+    expected_stdout: "tulas\n"
+    expected_exit: 0
+
+  - name: "chaine vide"
+    body: |
+      char s[] = "";
+      ft_strrev(s);
+      printf("[%s]\n", s);
+    expected_stdout: "[]\n"
+    expected_exit: 0
+
+  - name: "un seul caractere"
+    body: |
+      char s[] = "a";
+      ft_strrev(s);
+      printf("%s\n", s);
+    expected_stdout: "a\n"
+    expected_exit: 0
+
+  - name: "longueur paire"
+    body: |
+      char s[] = "abcd";
+      ft_strrev(s);
+      printf("%s\n", s);
+    expected_stdout: "dcba\n"
+    expected_exit: 0
+
+  - name: "longueur impaire"
+    body: |
+      char s[] = "abcde";
+      ft_strrev(s);
+      printf("%s\n", s);
+    expected_stdout: "edcba\n"
+    expected_exit: 0
+
+  - name: "retourne bien l'adresse du parametre"
+    body: |
+      char s[] = "hello";
+      char *ret = ft_strrev(s);
+      printf("%d\n", ret == s);
+    expected_stdout: "1\n"
+    expected_exit: 0
+
+  - name: "phrase avec espaces"
+    body: |
+      char s[] = "bonjour toi";
+      ft_strrev(s);
+      printf("%s\n", s);
+    expected_stdout: "iot ruojnob\n"
+    expected_exit: 0
